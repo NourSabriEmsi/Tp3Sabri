@@ -34,7 +34,7 @@ public class LlmClientPourGemini {
                 .chatMemory(chatMemory)
                 .build();
     }
-    public String envoyerRequete(String lieu) {
+    public String envoyerRequete(String lieu, int nbEndroits) {
         chatMemory.clear();
 
         String systemRole = """
@@ -45,6 +45,9 @@ public class LlmClientPourGemini {
                    "endroits_a_visiter": ["endroit 1", "endroit 2"],
                    "prix_moyen_repas": "<prix> <devise du pays>"
                 }
+                N'utilise pas Markdown.
+                       Tu dois retourner EXACTEMENT %d endroits dans "endroits_a_visiter".
+                                ""\".formatted(nbEndroits);
                 """;
         chatMemory.add(SystemMessage.from(systemRole));
         return assistant.chat("Donne les informations pour : " + lieu);
